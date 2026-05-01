@@ -117,7 +117,7 @@ def extract_with_gemini(images: list[Image.Image], text_hint: str = "") -> dict:
 
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel(
-        "gemini-1.5-flash",
+        "gemini-2.5-flash",
         generation_config={
             "response_mime_type": "application/json",
             "temperature": 0.0,
