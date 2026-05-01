@@ -9,3 +9,6 @@ output/
 *.xlsx.bak
 .idea/
 .vscode/
+
+# keep the canonical demo output that ships with the repo
+!output/filled_demo_bill.xlsx
