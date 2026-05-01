@@ -248,7 +248,7 @@ with st.sidebar:
     samples = sorted(SAMPLES.glob("sample_*.pdf"))
     for sp in samples:
         nice = sp.stem.replace("sample_", "").replace("_", " ").title()
-        if st.button(f"📄  {nice}", use_container_width=True, key=f"sample_{sp.name}"):
+        if st.button(f"›  {nice}", use_container_width=True, key=f"sample_{sp.name}"):
             reset_for_new_bill()
             ss.raw_bytes = sp.read_bytes()
             ss.file_name = sp.name
@@ -256,7 +256,7 @@ with st.sidebar:
 
     st.divider()
     if ss.raw_bytes:
-        if st.button("↻  Process another bill", use_container_width=True):
+        if st.button("↺  Process another bill", use_container_width=True):
             reset_for_new_bill()
             st.rerun()
 
@@ -311,17 +311,24 @@ if current_step() == 1:
     st.markdown("<div style='margin-top:32px;'></div>", unsafe_allow_html=True)
     st.markdown("##### How it works")
     cols = st.columns(4)
-    bullets = [
-        ("📤", "Upload",  "PDF or image of any electricity bill."),
-        ("🧠", "Extract", "Gemini reads the bill and returns structured JSON."),
-        ("✏️", "Review",  "Confidence chips on every field. Edit if needed."),
-        ("📊", "Download", "Filled Excel with intact solar-load formulas."),
+    steps = [
+        ("01", "Upload",   "PDF or image of any electricity bill."),
+        ("02", "Extract",  "Gemini reads the bill and returns structured JSON."),
+        ("03", "Review",   "Confidence chips on every field. Edit if needed."),
+        ("04", "Download", "Filled Excel with intact solar-load formulas."),
     ]
-    for col, (ic, t, d) in zip(cols, bullets):
+    for col, (n, t, d) in zip(cols, steps):
         col.markdown(
-            f"<div class='card'><div style='font-size:1.6rem'>{ic}</div>"
-            f"<div style='font-weight:700;margin-top:6px'>{t}</div>"
-            f"<div class='muted' style='margin-top:4px'>{d}</div></div>",
+            f"<div class='card'>"
+            f"  <div style='display:flex;align-items:center;gap:10px;'>"
+            f"    <div style='font-family:ui-monospace,SFMono-Regular,Menlo,monospace;"
+            f"                font-weight:700;color:#1FA463;font-size:1.4rem;"
+            f"                letter-spacing:-0.02em;'>{n}</div>"
+            f"    <div style='height:1px;flex:1;background:#E5E7EB;'></div>"
+            f"  </div>"
+            f"  <div style='font-weight:700;margin-top:10px;color:#0F1B14'>{t}</div>"
+            f"  <div class='muted' style='margin-top:4px'>{d}</div>"
+            f"</div>",
             unsafe_allow_html=True,
         )
 
@@ -367,7 +374,7 @@ elif current_step() == 2:
 
         st.caption("Click below to send the bill through the AI pipeline. Most bills extract in 2-5 seconds.")
 
-        if st.button("🧠  Extract data", type="primary", use_container_width=True):
+        if st.button("Run extraction  ›", type="primary", use_container_width=True):
             t0 = time.time()
             try:
                 with st.status("Processing bill...", expanded=True) as status:
@@ -554,7 +561,7 @@ elif current_step() == 3:
         key="confirm",
     )
 
-    if st.button("📥  Generate filled Excel", type="primary",
+    if st.button("Generate filled Excel  ›", type="primary",
                  use_container_width=True, disabled=not confirm):
         out_name = f"solar_load_{Path(ss.file_name).stem}.xlsx"
         out_path = OUTPUT_DIR / out_name
@@ -590,7 +597,7 @@ elif current_step() == 4:
         )
         st.write("")
         st.download_button(
-            "⬇  Download Excel",
+            "↓   Download Excel",
             data=data,
             file_name=Path(ss.output_path).name,
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -619,7 +626,7 @@ elif current_step() == 4:
                 st.warning("Skipped cells (formula collisions): " + str(rep["skipped"]))
 
     st.write("")
-    if st.button("📄  Process another bill", use_container_width=True):
+    if st.button("+   Process another bill", use_container_width=True):
         reset_for_new_bill()
         st.rerun()
 
