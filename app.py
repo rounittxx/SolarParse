@@ -8,6 +8,7 @@
 # Nothing fancy in terms of dependencies though -- just Streamlit + Pillow.
 
 import io
+import os
 import time
 from pathlib import Path
 
@@ -25,7 +26,17 @@ from src.extractor.pdf_parser import extract_text_from_pdf, looks_like_scanned
 from src.solar.calculator import recommend
 
 
+# Local dev: .env supplies the key.
+# Streamlit Cloud: st.secrets supplies it. We promote either source into
+# os.environ so the rest of the codebase only needs to call os.getenv.
 load_dotenv()
+try:
+    for k in ("GOOGLE_API_KEY", "GEMINI_API_KEY"):
+        if k in st.secrets and not os.environ.get(k):
+            os.environ[k] = st.secrets[k]
+except (FileNotFoundError, KeyError, st.errors.StreamlitAPIException):
+    # secrets.toml absent (typical for local dev). Fine -- .env handles it.
+    pass
 
 ROOT = Path(__file__).parent
 TEMPLATE = ROOT / "templates" / "solar_load_template.xlsx"

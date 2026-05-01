@@ -10,5 +10,5 @@ output/
 .idea/
 .vscode/
 
-# keep the canonical demo output that ships with the repo
-!output/filled_demo_bill.xlsx
+# real secrets file -- the .example template IS committed for docs
+.streamlit/secrets.toml
