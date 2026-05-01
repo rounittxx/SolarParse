@@ -1,0 +1,17 @@
+# Force light mode -- the custom CSS in app.py is tuned for a light canvas
+# (dark text on white cards, etc). Without this, Streamlit follows the
+# user's system preference and our cards turn into white-on-white.
+
+[theme]
+base                  = "light"
+primaryColor          = "#1FA463"
+backgroundColor       = "#FAFCFB"
+secondaryBackgroundColor = "#FFFFFF"
+textColor             = "#0F1B14"
+font                  = "sans serif"
+
+[client]
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false
