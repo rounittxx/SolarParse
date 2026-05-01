@@ -40,7 +40,7 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 
 st.set_page_config(
     page_title="Energybae | Solar Bill Extractor",
-    page_icon="⚡",
+    page_icon="◆",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -218,7 +218,14 @@ if not TEMPLATE.exists():
 # ============================================================
 
 with st.sidebar:
-    st.markdown("### ⚡ Energybae")
+    st.markdown(
+        "<div style='display:flex;align-items:center;gap:8px;'>"
+        "<span style='color:#1FA463;font-size:1.4rem;line-height:1'>◆</span>"
+        "<span style='font-weight:700;letter-spacing:0.14em;font-size:0.86rem;"
+        "color:#0F1B14'>ENERGYBAE</span>"
+        "</div>",
+        unsafe_allow_html=True,
+    )
     st.caption("Solar Bill Extractor · v0.1")
 
     st.divider()
@@ -270,7 +277,9 @@ with st.sidebar:
 st.markdown(
     """
     <div class='hero'>
-      <h1>⚡ Solar Bill Extractor</h1>
+      <div style='font-size:0.72rem;letter-spacing:0.18em;font-weight:600;
+                  opacity:0.85;margin-bottom:6px;'>ENERGYBAE&nbsp;&nbsp;//&nbsp;&nbsp;AI&nbsp;TOOLING</div>
+      <h1>Solar Bill Extractor</h1>
       <div class='sub'>Drop in any electricity bill, get a filled solar-load Excel back in seconds.</div>
     </div>
     """,
