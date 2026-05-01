@@ -1,6 +1,6 @@
 # Gemini-powered extraction.
 # Strategy:
-#   - Send the bill image(s) directly to gemini-1.5-flash (vision)
+#   - Send the bill image(s) directly to a Flash-tier vision model
 #   - If we also have a text layer, attach it as an extra hint
 #   - Force JSON output with response_mime_type="application/json"
 #   - Validate every field, coerce numerics, never let the model invent values
@@ -9,6 +9,11 @@
 #   1. it's free-tier friendly
 #   2. it's ~5x faster
 #   3. extraction is a structured task, not a reasoning task
+#
+# Model name is a moving target -- Google deprecates the older Flash
+# variants every few months. We try a list in order and use whichever
+# the API will actually serve, so a deprecation doesn't take the app
+# down until someone redeploys.
 
 import io
 import json
@@ -18,6 +23,19 @@ import re
 from PIL import Image
 
 from src.config import FIELDS, FIELD_KEYS
+
+
+# Ordered preference. First one that responds wins.
+# 2.0-flash is the current stable; the rest are aliases / older variants
+# we keep around purely as a safety net.
+MODEL_CANDIDATES = (
+    "gemini-2.5-flash",         # current latest, preferred
+    "gemini-2.0-flash",
+    "gemini-flash-latest",
+    "gemini-2.0-flash-001",
+    "gemini-1.5-flash-latest",
+    "gemini-1.5-flash-002",
+)
 
 
 SYSTEM_PROMPT = """You are an expert at reading Indian electricity bills (MSEDCL, BEST, Tata Power, Adani, etc.).
@@ -116,24 +134,46 @@ def extract_with_gemini(images: list[Image.Image], text_hint: str = "") -> dict:
     import google.generativeai as genai
 
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel(
-        "gemini-2.5-flash",
-        generation_config={
-            "response_mime_type": "application/json",
-            "temperature": 0.0,
-        },
-    )
 
     parts = [_build_prompt()]
     if text_hint.strip():
-        parts.append("Text layer pulled from the PDF (use as a hint, image is the source of truth):\n\n" + text_hint[:6000])
+        parts.append(
+            "Text layer pulled from the PDF (use as a hint, image is the source of truth):\n\n"
+            + text_hint[:6000]
+        )
     parts.extend(images or [])
 
     if not images and not text_hint.strip():
         raise ValueError("Nothing to send to Gemini -- no images and no text.")
 
-    resp = model.generate_content(parts)
-    raw = resp.text or "{}"
+    # Try our preferred models in order. First one that doesn't 404 wins.
+    last_err = None
+    raw = None
+    for name in MODEL_CANDIDATES:
+        try:
+            model = genai.GenerativeModel(
+                name,
+                generation_config={
+                    "response_mime_type": "application/json",
+                    "temperature": 0.0,
+                },
+            )
+            resp = model.generate_content(parts)
+            raw = resp.text or "{}"
+            break
+        except Exception as e:
+            last_err = e
+            # 404 / not_found / unsupported -> try next candidate.
+            # Anything else (auth, quota) -> bail immediately.
+            msg = str(e).lower()
+            if not any(s in msg for s in ("not found", "404", "is not supported", "unknown")):
+                raise
+
+    if raw is None:
+        raise RuntimeError(
+            "None of the candidate Gemini models could be reached. "
+            "Last error: " + str(last_err)
+        )
 
     try:
         payload = json.loads(raw)

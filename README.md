@@ -137,6 +137,25 @@ so even if a mapping is wrong you can't accidentally destroy a formula.
 - An offline regex extractor is included as a fallback for when no API
   key is set. It's not as good but it works.
 
+### Model selection
+
+The default model is `gemini-2.0-flash` (current stable, free-tier
+friendly, vision-capable). Google deprecates Flash variants every few
+months, so `src/extractor/llm_extractor.py` keeps an ordered fallback
+list — first model the API will actually serve, wins:
+
+```
+gemini-2.0-flash
+gemini-flash-latest
+gemini-2.0-flash-001
+gemini-1.5-flash-latest
+gemini-1.5-flash-002
+```
+
+If you hit a `404 models/... is not found` error, Google has retired
+another name. Add the new one to `MODEL_CANDIDATES` at the top of
+`llm_extractor.py` and redeploy.
+
 ---
 
 ## Tests
