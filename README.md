@@ -20,6 +20,32 @@ up before download so you can sanity-check the inputs.
 
 ---
 
+## Deploy a public link (Streamlit Community Cloud, free)
+
+Anyone with the link can use the app — your Gemini key stays server-side
+in Streamlit Secrets, never shipped to the browser.
+
+1. Push your code to GitHub (already done if you're reading this in the
+   repo).
+2. Go to [share.streamlit.io](https://share.streamlit.io) and sign in
+   with GitHub.
+3. Click **New app**, then:
+   - **Repository:** `rounittxx/Volt_extract`
+   - **Branch:** `main`
+   - **Main file path:** `app.py`
+4. Click **Advanced settings → Secrets**, paste:
+   ```toml
+   GOOGLE_API_KEY = "AIzaSy...your_key..."
+   ```
+5. Click **Deploy**. About 90 seconds later you get a public URL like
+   `https://volt-extract.streamlit.app`.
+
+Quota note: Gemini 1.5 Flash free tier is 15 requests/min and 1,500
+requests/day per key. Plenty for a demo, but if the link goes viral,
+you may want to add a per-session limit or move to a paid tier.
+
+---
+
 ## Run it locally
 
 ```bash
