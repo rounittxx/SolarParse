@@ -49,51 +49,56 @@ st.markdown(
     """
     <style>
       /* ---- canvas ---- */
-      .stApp { background: linear-gradient(180deg, #FAFCFB 0%, #F4F7F5 100%); }
+      /* Force a light canvas + dark default text. Every custom container
+         below ALSO sets its own color, so nothing relies on inheritance. */
+      .stApp { background: linear-gradient(180deg, #FAFCFB 0%, #F4F7F5 100%) !important;
+               color: #0F1B14 !important; }
       .block-container { padding-top: 1.2rem; padding-bottom: 4rem; max-width: 1280px; }
 
       /* ---- typography ---- */
-      h1, h2, h3 { color: #0F1B14; letter-spacing: -0.01em; }
-      .muted    { color:#6B7280; font-size:0.86rem; }
-      .tiny     { color:#9CA3AF; font-size:0.74rem; }
+      h1, h2, h3, h4, h5, h6 { color: #0F1B14 !important; letter-spacing: -0.01em; }
+      .stApp p, .stApp span, .stApp label, .stApp li { color: #1F2937; }
+      .muted { color:#6B7280 !important; font-size:0.86rem; }
+      .tiny  { color:#9CA3AF !important; font-size:0.74rem; }
 
       /* ---- hero ---- */
       .hero {
         background: linear-gradient(135deg, #0F4C36 0%, #1FA463 100%);
-        color: white; padding: 28px 32px; border-radius: 18px;
+        color: #FFFFFF !important; padding: 28px 32px; border-radius: 18px;
         box-shadow: 0 6px 22px rgba(15,76,54,0.15);
       }
-      .hero h1 { color: white; margin: 0; font-size: 1.8rem; font-weight: 700; }
-      .hero .sub { color: rgba(255,255,255,0.85); margin-top: 4px; font-size: 0.95rem; }
+      .hero h1  { color: #FFFFFF !important; margin: 0; font-size: 1.8rem; font-weight: 700; }
+      .hero .sub{ color: rgba(255,255,255,0.92) !important; margin-top: 4px; font-size: 0.95rem; }
 
       /* ---- stepper ---- */
       .stepper { display:flex; gap:0; margin: 18px 0 10px 0;
-                 background:white; padding: 8px; border-radius: 12px;
+                 background:#FFFFFF !important; padding: 8px; border-radius: 12px;
                  border:1px solid #E5E7EB; }
       .step { flex:1; padding: 10px 14px; text-align:center; font-size:0.8rem;
-              color:#9CA3AF; font-weight:600; border-radius:8px; transition:all .2s; }
-      .step.done { color:#0F4C36; }
-      .step.active { background:#1FA463; color:white; }
+              color:#9CA3AF !important; font-weight:600; border-radius:8px; transition:all .2s; }
+      .step.done   { color:#0F4C36 !important; }
+      .step.active { background:#1FA463 !important; color:#FFFFFF !important; }
       .step .num { display:inline-block; width:22px; height:22px;
                    border-radius:50%; background:#E5E7EB; color:#6B7280;
                    font-size:0.75rem; line-height:22px; margin-right:6px; }
-      .step.done .num   { background:#DCFCE7; color:#0F4C36; }
-      .step.active .num { background:rgba(255,255,255,.25); color:white; }
+      .step.done   .num { background:#DCFCE7; color:#0F4C36; }
+      .step.active .num { background:rgba(255,255,255,.25); color:#FFFFFF; }
 
-      /* ---- cards ---- */
-      .card { background:white; padding:18px 20px; border-radius:14px;
-              border:1px solid #E5E7EB; height:100%; }
-      .stat-num { font-size:1.55rem; font-weight:700; color:#0F1B14; }
-      .stat-lbl { font-size:0.72rem; color:#6B7280; text-transform:uppercase;
+      /* ---- cards (always white bg, always dark text) ---- */
+      .card { background:#FFFFFF !important; padding:18px 20px; border-radius:14px;
+              border:1px solid #E5E7EB; height:100%; color:#0F1B14 !important; }
+      .card * { color: inherit; }
+      .stat-num { font-size:1.55rem; font-weight:700; color:#0F1B14 !important; }
+      .stat-lbl { font-size:0.72rem; color:#6B7280 !important; text-transform:uppercase;
                   letter-spacing:.05em; margin-bottom:4px; }
 
       /* ---- confidence pills + bars ---- */
       .pill { display:inline-block; padding:2px 9px; border-radius:999px;
               font-size:0.7rem; font-weight:700; }
-      .pill.ok    { background:#DCFCE7; color:#166534; }
-      .pill.warn  { background:#FEF3C7; color:#92400E; }
-      .pill.bad   { background:#FEE2E2; color:#991B1B; }
-      .pill.edit  { background:#E0E7FF; color:#3730A3; }
+      .pill.ok    { background:#DCFCE7 !important; color:#166534 !important; }
+      .pill.warn  { background:#FEF3C7 !important; color:#92400E !important; }
+      .pill.bad   { background:#FEE2E2 !important; color:#991B1B !important; }
+      .pill.edit  { background:#E0E7FF !important; color:#3730A3 !important; }
 
       .bar { height:4px; background:#F3F4F6; border-radius:999px; overflow:hidden; margin-top:4px; }
       .bar > span { display:block; height:100%; border-radius:999px; }
@@ -101,25 +106,26 @@ st.markdown(
       .bar.warn > span { background:#F59E0B; }
       .bar.bad  > span { background:#EF4444; }
 
-      /* ---- sample-bill chips ---- */
-      .sample-chip { padding: 10px 14px; background:white;
-                     border:1px solid #E5E7EB; border-radius:10px;
-                     display:inline-block; font-size:0.85rem;
-                     color:#0F1B14; margin-right:8px; }
-
       /* ---- footer ---- */
       footer { visibility: hidden; }
-      .made-by { text-align:center; color:#9CA3AF; font-size:0.78rem; margin-top:30px; }
+      .made-by { text-align:center; color:#6B7280 !important; font-size:0.78rem; margin-top:30px; }
+      .made-by a { color:#1FA463 !important; text-decoration:none; }
 
       /* ---- streamlit native overrides ---- */
       div[data-testid="stFileUploader"] section {
-        background: white; border: 2px dashed #1FA463; border-radius: 14px; }
+        background:#FFFFFF !important; color:#0F1B14 !important;
+        border: 2px dashed #1FA463; border-radius: 14px; }
       div[data-testid="stFileUploader"] section:hover { border-color:#0F4C36; }
+      div[data-testid="stFileUploader"] section * { color:#0F1B14 !important; }
 
       .stButton > button[kind="primary"] {
-        background: #1FA463; border: 0; font-weight: 600;
+        background:#1FA463 !important; color:#FFFFFF !important;
+        border: 0; font-weight: 600;
         box-shadow: 0 2px 8px rgba(31,164,99,0.25); }
-      .stButton > button[kind="primary"]:hover { background: #0F4C36; }
+      .stButton > button[kind="primary"]:hover { background:#0F4C36 !important; }
+      .stButton > button[kind="secondary"] {
+        background:#FFFFFF !important; color:#0F1B14 !important;
+        border:1px solid #E5E7EB !important; }
     </style>
     """,
     unsafe_allow_html=True,
