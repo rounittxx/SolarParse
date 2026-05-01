@@ -30,7 +30,7 @@ in Streamlit Secrets, never shipped to the browser.
 2. Go to [share.streamlit.io](https://share.streamlit.io) and sign in
    with GitHub.
 3. Click **New app**, then:
-   - **Repository:** `rounittxx/Volt_extract`
+   - **Repository:** `rounittxx/SolarParse`
    - **Branch:** `main`
    - **Main file path:** `app.py`
 4. Click **Advanced settings → Secrets**, paste:
@@ -38,7 +38,7 @@ in Streamlit Secrets, never shipped to the browser.
    GOOGLE_API_KEY = "AIzaSy...your_key..."
    ```
 5. Click **Deploy**. About 90 seconds later you get a public URL like
-   `https://volt-extract.streamlit.app`.
+   `https://solarparse.streamlit.app`.
 
 Quota note: Gemini 1.5 Flash free tier is 15 requests/min and 1,500
 requests/day per key. Plenty for a demo, but if the link goes viral,

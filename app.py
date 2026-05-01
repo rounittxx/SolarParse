@@ -278,7 +278,7 @@ with st.sidebar:
             "PDF/image -> Gemini vision -> JSON validation -> Excel "
             "template fill (formulas preserved) -> download."
         )
-        st.caption("[GitHub repo](https://github.com/rounittxx/Volt_extract)")
+        st.caption("[GitHub repo](https://github.com/rounittxx/SolarParse)")
 
 
 # ============================================================
@@ -650,7 +650,7 @@ st.markdown(
     "<div class='made-by'>"
     "Built for Energybae · "
     "PDFs are processed in-memory and never stored · "
-    "<a href='https://github.com/rounittxx/Volt_extract' style='color:#1FA463;text-decoration:none'>Source on GitHub</a>"
+    "<a href='https://github.com/rounittxx/SolarParse' style='color:#1FA463;text-decoration:none'>Source on GitHub</a>"
     "</div>",
     unsafe_allow_html=True,
 )
