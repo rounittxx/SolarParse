@@ -126,6 +126,25 @@ st.markdown(
       .stButton > button[kind="secondary"] {
         background:#FFFFFF !important; color:#0F1B14 !important;
         border:1px solid #E5E7EB !important; }
+
+      /* ---- sidebar contrast ---- */
+      section[data-testid="stSidebar"] { background:#FFFFFF !important; }
+      section[data-testid="stSidebar"] * { color:#1F2937 !important; }
+      section[data-testid="stSidebar"] h1,
+      section[data-testid="stSidebar"] h2,
+      section[data-testid="stSidebar"] h3,
+      section[data-testid="stSidebar"] h4 { color:#0F1B14 !important; }
+      section[data-testid="stSidebar"] .stCaption,
+      section[data-testid="stSidebar"] small { color:#6B7280 !important; }
+      section[data-testid="stSidebar"] .stButton > button {
+        background:#F9FAFB !important; color:#0F1B14 !important;
+        border:1px solid #E5E7EB !important; font-weight:500; }
+      section[data-testid="stSidebar"] .stButton > button:hover {
+        background:#F3F4F6 !important; border-color:#1FA463 !important; }
+
+      /* ---- streamlit alerts (info/warning/success) keep their colors ---- */
+      div[data-testid="stAlert"] { color:#0F1B14 !important; }
+      div[data-testid="stAlert"] * { color: inherit !important; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -415,11 +434,16 @@ elif current_step() == 3:
             if f.key in ss.user_edits:
                 edited_pill = "<span class='pill edit' style='margin-left:6px'>edited</span>"
 
+            unit_html = (
+                f" <span style='color:#9CA3AF;font-size:0.74rem;font-weight:500'>"
+                f"({f.unit})</span>" if f.unit else ""
+            )
+
             label_html = (
-                f"<div style='display:flex;align-items:center;justify-content:space-between;'>"
-                f"<div><b>{f.label}</b>"
-                f"{f' <span class=tiny>({f.unit})</span>' if f.unit else ''}"
-                f"{edited_pill}</div>"
+                f"<div style='display:flex;align-items:center;justify-content:space-between;"
+                f"margin-top:4px'>"
+                f"<div style='color:#0F1B14;font-weight:600;font-size:0.92rem'>"
+                f"{f.label}{unit_html}{edited_pill}</div>"
                 f"<div><span class='pill {tone}'>{conf_text}</span></div>"
                 f"</div>"
                 f"<div class='bar {tone}'><span style='width:{pct}%'></span></div>"
