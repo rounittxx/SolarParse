@@ -14,7 +14,7 @@ extraction is layout-agnostic, so most Indian DISCOM bills should work.
 
 | | |
 |---|---|
-| Live app | `https://solarparse.streamlit.app` *(once deployed)* |
+| Live app | https://solarparse.streamlit.app |
 | Repo | https://github.com/rounittxx/SolarParse |
 ---
 
