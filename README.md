@@ -16,7 +16,6 @@ extraction is layout-agnostic, so most Indian DISCOM bills should work.
 |---|---|
 | Live app | `https://solarparse.streamlit.app` *(once deployed)* |
 | Repo | https://github.com/rounittxx/SolarParse |
-| Filled Excel from sample bill | [`output/filled_demo_bill.xlsx`](output/filled_demo_bill.xlsx) |
 | 3-paragraph writeup | [`EXPLANATION.md`](EXPLANATION.md) |
 | Headless one-command demo | `python scripts/run_gemini_demo.py` |
 
